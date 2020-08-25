@@ -1,12 +1,25 @@
 import os
 import pyttsx3
+import datetime
+import time
+import random
 
 # Data
 guide = "Hi I am Python Assistant, as the name suggests made with ❤ in Python\n1. Can open basic applications on your " \
-        "device like chrome, notepad or Vscode"\
-        "\n2. Google search (use command search)"\
-        "\n3. Tell you current Date and time"\
+        "device like chrome, notepad or Vscode" \
+        "\n2. Google search (use command search)" \
+        "\n3. Tell you current Date and time" \
         "\n4. Rest is a suspense for you to explore my power"
+
+sorryText = ["I don't understand",
+             "I'm sorry I didn't got that !",
+             "Sorry I didn't get that"]
+
+byeByeText = [
+    "See you later alligator",
+    "Bye Bye Honey Pie",
+    "See ya later"
+]
 
 print('Welcome! This is a python assistant')
 pyttsx3.speak('Welcome! This is a python assistant')
@@ -25,8 +38,11 @@ while True:
     userInput = input()
     userInput = userInput.lower()
 
+    if 'do not' in userInput or 'not' in userInput or 'dont' in userInput or 'don\'t' in userInput:
+        print('Ok I won\'t do that')
+        pyttsx3.speak('Ok! I won\'t do that')
     # Logic to exit console
-    if 'exit' in userInput or 'leave' in userInput:
+    elif 'exit' in userInput or 'leave' in userInput:
         print('Are you sure you want to exit (Y/N) : ', end='')
         pyttsx3.speak(f'Are you sure you want to exit {name}')
         exitAnswer = input()
@@ -59,6 +75,7 @@ while True:
         elif 'vscode' in userInput or 'code' in userInput:
             os.system('code')
 
+    # Logic for search
     elif 'search' in userInput:
         print('What would you like to search ? - ', end="")
         pyttsx3.speak('What would you like to search ?')
@@ -67,6 +84,29 @@ while True:
             url = searchInput
         else:
             url = f'https://www.google.com/search?q={searchInput}'
-        print(f'Searching for {searchInput}')
-        pyttsx3.speak(f'Searching for {searchInput}')
-        os.system(f'chrome {url}')
+            print(f'Searching for {searchInput}')
+            pyttsx3.speak(f'Searching for {searchInput}')
+            os.system(f'chrome {url}')
+
+    # Get current Date
+    elif 'date' in userInput:
+        print(f'The current date is {datetime.date.today()}')
+        pyttsx3.speak(f'The current date is {datetime.date.today()}')
+
+    # Get current Time
+    elif 'time' in userInput:
+        t = time.localtime()
+        print(f'Current time is {time.strftime("%H:%M:%S", t)}')
+        pyttsx3.speak(f'Current time is {time.strftime("%H:%M:%S", t)}')
+
+    # Logic for bye, take care
+    elif 'bye' in userInput:
+        randomText = f"{byeByeText[random.randint(0, 2)]}"
+        print(randomText)
+        pyttsx3.speak(randomText)
+
+    # Sorry Logic
+    else:
+        randomText = f"{sorryText[random.randint(0, 2)]}"
+        print(randomText)
+        pyttsx3.speak(randomText)
