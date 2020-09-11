@@ -1,8 +1,11 @@
 import os
+import speech_recognition as sr
 import pyttsx3
 import datetime
 import time
 import random
+
+r = sr.Recognizer()
 
 # Data
 guide = "Hi I am Python Assistant, as the name suggests made with ❤ in Python\n1. Can open basic applications on your " \
@@ -24,9 +27,15 @@ byeByeText = [
 print('Welcome! This is a python assistant')
 pyttsx3.speak('Welcome! This is a python assistant')
 
-print('What is your name? - ', end="")
-pyttsx3.speak('What is your name?')
-name = input()
+
+with sr.Microphone() as source:
+    print('What is your name? - ', end="")
+    pyttsx3.speak('What is your name?')
+    audio = r.listen(source)
+
+userAudioText = r.recognize_google(audio)
+print(userAudioText)
+name = userAudioText
 
 firstTimeExecution = True
 while True:
@@ -35,10 +44,13 @@ while True:
         pyttsx3.speak(f'Hello {name} How can I help you')
         firstTimeExecution = False
 
-    userInput = input()
+    with sr.Microphone() as source:
+        audio = r.listen(source)
+
+    userInput = r.recognize_google(audio)
     userInput = userInput.lower()
 
-    if 'do not' in userInput or 'not' in userInput or 'dont' in userInput or 'don\'t' in userInput:
+    if 'do not' in userInput or 'not' in userInput or 'don\'t' in userInput or 'don\'t' in userInput:
         print('Ok I won\'t do that')
         pyttsx3.speak('Ok! I won\'t do that')
     # Logic to exit console
